@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vote;
+use App\Models\Character;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreVoteRequest;
@@ -33,5 +34,15 @@ class VoteController extends Controller
             "data" => $createdVote
         ];
         return new JsonResponse($responseData, Response::HTTP_CREATED);
+    }
+
+    public function getCharacters()
+    {
+        $characters = Character::all();
+        $responseData = [
+            "status" => true,
+            "data" => $characters
+        ];
+        return new JsonResponse($responseData, Response::HTTP_OK);
     }
 }

@@ -20,11 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Auth::routes();
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('characters', CharacterController::class);
 });
 
+
 Route::controller(VoteController::class)->group(function () {
     Route::get('/votes', 'index');
     Route::post('/votes', 'store');
+    Route::get('/votes/characters', 'getCharacters');
 });

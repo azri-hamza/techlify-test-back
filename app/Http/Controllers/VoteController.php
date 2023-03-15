@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Vote;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\StoreVoteRequest;
 
 class VoteController extends Controller
 {
@@ -23,7 +24,14 @@ class VoteController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(StoreVoteRequest $request)
     {
+        $validated = $request->validated();
+        $createdVote = Vote::create($validated);
+        $responseData = [
+            "status" => true,
+            "data" => $createdVote
+        ];
+        return new JsonResponse($responseData, Response::HTTP_CREATED);
     }
 }

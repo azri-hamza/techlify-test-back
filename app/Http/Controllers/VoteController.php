@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreVoteRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\JoinClause;
 
 class VoteController extends Controller
 {
@@ -62,6 +63,20 @@ class VoteController extends Controller
         $responseData = [
             "status" => true,
             "data" => $votes
+        ];
+        return new JsonResponse($responseData, Response::HTTP_OK);
+    }
+
+    public function getTopFiveCharacters()
+    {
+        $votes = DB::table('votes')->selectRaw('count(character_id) as vote_count, character_id')->groupByRaw('character_id')->orderByRaw('vote_count DESC')->limit(5);
+        $characters = DB::table('characters')->rightJoinSub($votes, 'top_5_characters', function (JoinClause $join) {
+            $join->on('characters.id', '=', 'top_5_characters.character_id');
+        })->get();
+        $responseData = [
+            "status" => true,
+            // "data" => $votes,
+            "data" => $characters,
         ];
         return new JsonResponse($responseData, Response::HTTP_OK);
     }

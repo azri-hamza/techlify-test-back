@@ -8,6 +8,7 @@ use App\Models\Character;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\StoreVoteRequest;
+use Illuminate\Support\Facades\DB;
 
 class VoteController extends Controller
 {
@@ -42,6 +43,15 @@ class VoteController extends Controller
         $responseData = [
             "status" => true,
             "data" => $characters
+        ];
+        return new JsonResponse($responseData, Response::HTTP_OK);
+    }
+    public function getAllDailyVotes()
+    {
+        $votes = DB::table('votes')->selectRaw('count(character_id) as vote_count, DATE(created_at) as vote_date')->groupByRaw('vote_date')->get();
+        $responseData = [
+            "status" => true,
+            "data" => $votes
         ];
         return new JsonResponse($responseData, Response::HTTP_OK);
     }

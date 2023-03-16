@@ -30,4 +30,5 @@ Route::controller(VoteController::class)->group(function () {
     Route::get('/votes', 'index');
     Route::post('/votes', 'store');
     Route::get('/votes/characters', 'getCharacters');
+    Route::get('/votes/daily', 'getAllDailyVotes');
 });

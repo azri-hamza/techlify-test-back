@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException ;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
 
 class CharacterController extends Controller
 {
@@ -20,9 +21,16 @@ class CharacterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $characters = Character::all();
+        $searchQuerey = $request->query('search', '');
+        // $searchQuerey = 'Goo';
+        if ($searchQuerey) {
+            $characters = Character::query()->where('name', 'LIKE', "%$searchQuerey%")->get();
+        } else {
+            $characters = Character::all();
+        }
+        // $characters = Character::all();
         $responseData = [
             "status" => true,
             "data" => $characters

@@ -55,4 +55,14 @@ class VoteController extends Controller
         ];
         return new JsonResponse($responseData, Response::HTTP_OK);
     }
+
+    public function getCharacterDailyVotes($id)
+    {
+        $votes = DB::table('votes')->selectRaw('count(character_id) as vote_count, DATE(created_at) as vote_date')->where('character_id', '=', $id)->groupByRaw('vote_date')->get();
+        $responseData = [
+            "status" => true,
+            "data" => $votes
+        ];
+        return new JsonResponse($responseData, Response::HTTP_OK);
+    }
 }

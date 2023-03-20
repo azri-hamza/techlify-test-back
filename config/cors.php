@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*', 'https://azri-hamza.github.io/techlify-test-front'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
